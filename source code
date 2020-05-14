@@ -28,5 +28,5 @@ giveaway.registerCommand(
       .then((message) => {
         message.addReaction('✅');
       });
-  }
-);
+    }
+  );
