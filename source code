@@ -1,0 +1,32 @@
+const giveaway = new discord.command.CommandGroup({
+  defaultPrefix: '$'
+});
+
+giveaway.registerCommand(
+  'give',
+  (args) => ({
+    Long: args.integerOptional(),
+    Title: args.textOptional()
+  }),
+  async ({ message }, { Long, Title }) => {
+    const richEmbed = new discord.Embed();
+    const QUEUE_CHANNEL_ID = '710326153184936008';
+    const chan = (await discord.getChannel(
+      '710314942464786463'
+    )) as discord.GuildTextChannel;
+    richEmbed.setTitle(Title).setColor(0x0000ff);
+    richEmbed.setDescription(
+      [
+        `The giveaway ends in ${Long} minutes!`,
+        `React below for a chance to enter!`
+      ].join('\n')
+    );
+    discord.registerEventHandler('MESSAGE_REACTION_ADD', async (message) => {});
+
+    await chan
+      .sendMessage({ content: '', embed: richEmbed })
+      .then((message) => {
+        message.addReaction('✅');
+      });
+  }
+);
