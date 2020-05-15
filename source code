@@ -10,6 +10,7 @@ giveaway.registerCommand(
   }),
   async ({ message }, { Long, Title }) => {
     const richEmbed = new discord.Embed();
+    //Match channel id to your channel id!//
     const chan = (await discord.getChannel(
       '706324089752518699'
     )) as discord.GuildTextChannel;
@@ -33,6 +34,7 @@ discord.registerEventHandler('MESSAGE_REACTION_ADD', async (event) => {
   const guild = await discord.getGuild(event.guildId!);
   const member = await guild.getMember(event.userId);
   const embed = new discord.Embed();
+      //Match channel id to your channel id!//
   const channel = (await discord.getTextChannel(
     '710326153184936008'
   )) as discord.GuildTextChannel;
