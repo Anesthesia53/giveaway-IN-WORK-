@@ -10,9 +10,8 @@ giveaway.registerCommand(
   }),
   async ({ message }, { Long, Title }) => {
     const richEmbed = new discord.Embed();
-    const QUEUE_CHANNEL_ID = '710326153184936008';
     const chan = (await discord.getChannel(
-      '710314942464786463'
+      '706324089752518699'
     )) as discord.GuildTextChannel;
     richEmbed.setTitle(Title).setColor(0x0000ff);
     richEmbed.setDescription(
@@ -21,12 +20,23 @@ giveaway.registerCommand(
         `React below for a chance to enter!`
       ].join('\n')
     );
-    discord.registerEventHandler('MESSAGE_REACTION_ADD', async (message) => {});
 
     await chan
       .sendMessage({ content: '', embed: richEmbed })
       .then((message) => {
         message.addReaction('✅');
       });
-    }
-  );
+  }
+);
+
+discord.registerEventHandler('MESSAGE_REACTION_ADD', async (event) => {
+  const guild = await discord.getGuild(event.guildId!);
+  const member = await guild.getMember(event.userId);
+  const embed = new discord.Embed();
+  const channel = (await discord.getTextChannel(
+    '710326153184936008'
+  )) as discord.GuildTextChannel;
+  embed.setTitle(`${member.user.getTag()} has entered the competition!`);
+  await channel.sendMessage(embed);
+});
+
