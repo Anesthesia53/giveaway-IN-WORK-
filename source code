@@ -1,44 +1,46 @@
-const giveaway = new discord.command.CommandGroup({
-  defaultPrefix: '$'
+import './test';
+
+import './custom';
+
+import './games';
+
+import './stonks';
+
+import './giveaway';
+
+import './moderation';
+
+const commands = new discord.command.CommandGroup({
+  defaultPrefix: '.'
+});
+const Embed = new discord.Embed();
+
+commands.raw('help', async (message) => {
+  Embed.setTitle(`Command Categories`);
+  Embed.setDescription(`Join the support server: https://discord.gg/4KQyhJc
+
+  *Public Bot Prefix: .*
+  *Admin Bot Prefix: $*
+
+  **Moderation**
+  .help moderation
+
+  **Welcome**
+  .help welcome
+
+  **Economy**
+  .help economy
+  
+  **Games**
+  .help games
+  
+  __Try .help advanced for advanced commands!__`);
+  await message.reply(Embed);
 });
 
-giveaway.registerCommand(
-  'give',
-  (args) => ({
-    Long: args.integerOptional(),
-    Title: args.textOptional()
-  }),
-  async ({ message }, { Long, Title }) => {
-    const richEmbed = new discord.Embed();
-    //Match channel id to your channel id!//
-    const chan = (await discord.getChannel(
-      '706324089752518699'
-    )) as discord.GuildTextChannel;
-    richEmbed.setTitle(Title).setColor(0x0000ff);
-    richEmbed.setDescription(
-      [
-        `The giveaway ends in ${Long} minutes!`,
-        `React below for a chance to enter!`
-      ].join('\n')
-    );
-
-    await chan
-      .sendMessage({ content: '', embed: richEmbed })
-      .then((message) => {
-        message.addReaction('✅');
-      });
+discord.on('MESSAGE_CREATE', async (message) => {
+  if (message.content === 'how do i report a bug?') {
+    return message.reply(`Please make sure to check out <#706355777392083005>`);
   }
-);
-
-discord.registerEventHandler('MESSAGE_REACTION_ADD', async (event) => {
-  const guild = await discord.getGuild(event.guildId!);
-  const member = await guild.getMember(event.userId);
-  const embed = new discord.Embed();
-      //Match channel id to your channel id!//
-  const channel = (await discord.getTextChannel(
-    '710326153184936008'
-  )) as discord.GuildTextChannel;
-  embed.setTitle(`${member.user.getTag()} has entered the competition!`);
-  await channel.sendMessage(embed);
 });
 
